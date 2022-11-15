@@ -1,19 +1,22 @@
 part of 'route_manager.dart';
 
 @immutable
-class CustomWidgetTransition extends StatelessWidget {
-  final  TransitionType transitionType;
+class WidgetTransitionAnimation<T> extends StatelessWidget {
+  final TransitionType transitionType;
   final Animation<double> animation;
   final Widget widget;
   final Curve curve;
+  /// Esse parâmetro [route] é obrigatório se o tipo de transição for [TransitionType.theme]
+  final PageRoute<T>? route;
 
   /// Widget responsável pela animação definida na transição de rostas 
-  const CustomWidgetTransition({
+  const WidgetTransitionAnimation({
     Key? key, 
-    required this.transitionType, 
-    required this.animation, 
-    required this.widget, 
-    required this.curve
+    required this.transitionType,
+    required this.animation,
+    required this.widget,
+    required this.curve,
+    this.route,
   }) : super(key: key);
 
   @override
@@ -61,13 +64,16 @@ class CustomWidgetTransition extends StatelessWidget {
         );
       case TransitionType.sizeVertical: 
       case TransitionType.sizeHorizontal:
-        return SizeTransition(
-          sizeFactor: Tween<double>(begin: 0.0, end: 1.0)
-            .animate(CurvedAnimation(parent: animation, curve: curve)),
-          child: widget,
-          axis: transitionType == TransitionType.sizeHorizontal
-            ? Axis.horizontal
-            : Axis.vertical,
+        return Center(
+          child: SizeTransition(
+            // sizeFactor: CurvedAnimation(parent: animation, curve: curve),
+            sizeFactor: Tween<double>(begin: 0.0, end: 1.0)
+              .animate(CurvedAnimation(parent: animation, curve: curve)),
+            child: widget,
+            axis: transitionType == TransitionType.sizeHorizontal
+              ? Axis.horizontal
+              : Axis.vertical,
+          ),
         );
       case TransitionType.slideWithScaleTopToBottom: 
       case TransitionType.slideWithScaleLeftToRight:
@@ -119,6 +125,24 @@ class CustomWidgetTransition extends StatelessWidget {
             opacity: animation,
           ),
         );
+      case TransitionType.withoutAnimation:
+        return widget;
+      case TransitionType.theme:
+        if(route != null) {
+          return Theme
+            .of(context)
+              .pageTransitionsTheme
+                .buildTransitions(
+                  route!,
+                  context,
+                  animation,
+                  animation,
+                  widget
+                );
+        } else {
+          print("----- O parâmetro 'route' não foi definido -----");
+          return widget;
+        }
       default: return const SizedBox();
     }
   }
@@ -232,4 +256,6 @@ enum TransitionType{
   slideWithScaleLeftToRight,
   slideWithScaleRightToLeft,
   slideWithScaleBottomToTop,
+  theme,
+  withoutAnimation,
 }

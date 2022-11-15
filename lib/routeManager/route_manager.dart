@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-part 'custom_route_transition.dart';
+part 'widget_transition_animation.dart';
 part 'route_observer_provider.dart';
 part 'unknow_route_screen.dart';
-part 'custom_page_route.dart';
+part 'screen_route_builder.dart';
 part 'navigation_transition.dart';
 part 'binding_page_builder.dart';
 
@@ -97,9 +97,9 @@ class RouteManager {
   Future<T?> pushNamedCustomized<T extends Object?>({
     required String routeName,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -170,9 +170,9 @@ class RouteManager {
     required String routeName,
     TO? result,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -241,9 +241,9 @@ class RouteManager {
     required String routeName,
     required RoutePredicate predicate,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -314,9 +314,9 @@ class RouteManager {
     required String routeName, 
     TO? result,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -384,9 +384,9 @@ class RouteManager {
     required WidgetBuilder builder,
     String? routeName,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -449,9 +449,9 @@ class RouteManager {
     TO? result,
     String? routeName,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -514,9 +514,9 @@ class RouteManager {
     required RoutePredicate predicate,
     String? routeName,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
+    Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -601,7 +601,7 @@ class RouteManager {
       routeName: routeSettings.name,
       transitionType: TransitionType.scaleCenter,
       curve: Curves.elasticInOut,
-      transitionDuration: _transitionDuration,
+      transitionDuration: NavigationTransition.defaultTransitionDuration,
     );
   };
 

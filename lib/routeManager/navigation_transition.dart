@@ -5,7 +5,7 @@ abstract class NavigationTransition {
   /// padrão [MaterialPageRoute] ou [CupertinoPageRoute]
   static Route<T> flutterDefault<T>({
     required WidgetBuilder builder,
-    String? title, /// Esse parâmetro se aplica apenas a [CupertinoPageRoute]
+    String? title, /// Esse parâmetro se aplica apenas ao [CupertinoPageRoute]
     String? routeName,
     Object? arguments,
     bool maintainState = true,
@@ -37,9 +37,9 @@ abstract class NavigationTransition {
     required WidgetBuilder builder,
     String? routeName,
     Object? arguments,
-    TransitionType transitionType = _transitionType,
-    Duration transitionDuration = _transitionDuration,
-    Duration reverseTransitionDuration = _transitionDuration,
+    TransitionType transitionType = NavigationTransition.defaultTransitionType,
+    Duration transitionDuration = defaultTransitionDuration,
+    Duration reverseTransitionDuration = defaultTransitionDuration,
     Curve curve = Curves.ease,
     bool opaque = true,
     bool barrierDismissible = false,
@@ -49,7 +49,7 @@ abstract class NavigationTransition {
     bool fullscreenDialog = false,
   }){
 
-    return CustomPageRoute<T>(
+    return ScreenRouteBuilder<T>(
       builder: builder,
       opaque: opaque,
       barrierDismissible: barrierDismissible,
@@ -60,21 +60,25 @@ abstract class NavigationTransition {
       transitionDuration: transitionDuration,
       reverseTransitionDuration: reverseTransitionDuration,
       settings: RouteSettings(name: routeName, arguments: arguments),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        return CustomWidgetTransition(
-          transitionType: transitionType, 
-          animation: animation, 
+      transitionsBuilder: (route, context, animation, secondaryAnimation, child) {
+        return WidgetTransitionAnimation(
+          transitionType: transitionType,
+          animation: animation,
           widget: child,
           curve: curve,
+          route: route,
         );
       },
     );
 
   }
 
+  static const Duration defaultTransitionDuration = Duration(milliseconds: 500);
+
+  static const TransitionType defaultTransitionType = TransitionType.slideWithScaleRightToLeft;
+
 }
 
-const TransitionType _transitionType = TransitionType.slideWithScaleRightToLeft;
 
 enum FlutterDefaultTransition{
   material,
