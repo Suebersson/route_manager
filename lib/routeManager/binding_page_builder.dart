@@ -1,7 +1,7 @@
 part of 'route_manager.dart';
 
 extension ImplementPageDependecy on BuildContext {
-  T getPageDependency<T> (){
+  T getPageDependency<T>() {
     return BindingPageBuilder.getPageDependency<T>(this);
   }
 }
@@ -10,9 +10,9 @@ final Map<String, Object> _bindings = {};
 
 @immutable
 class BindingPageBuilder<T> extends StatefulWidget {
-  /// Widget responsável por acoplar uma instância de um [Object] 
-  /// para um outro [Widget] (página) usar como uma dependência (uma cotroller) 
-  /// 
+  /// Widget responsável por acoplar uma instância de um [Object]
+  /// para um outro [Widget] (página) usar como uma dependência (uma cotroller)
+  ///
   /// O mesmo tem o tatal controle para instânciar os objetos [builder] e [controller]
   /// apenas quando serão usados
 
@@ -29,49 +29,46 @@ class BindingPageBuilder<T> extends StatefulWidget {
   final bool sigleton;
   final bool lazy;
 
-  static T getPageDependency<T>(BuildContext context){
+  static T getPageDependency<T>(BuildContext context) {
     /// intância de [_BindingPageBuilderState]
     dynamic bindingPageBuilderState = context.findAncestorStateOfType();
+
     ///
     /// chamar o método [controller] que não existe dentro da instância
     ///  para o dart chamar o método [noSuchMethod] e retornar o valor de [_controllerInstance
     //_TypeError (type 'Controller' is not a subtype of type 'Any')
     try {
       return bindingPageBuilderState.controller();
-    } on TypeError catch(e, s) {
-      print('''
-        O tipo de objeto passado no parâmetro T é diferente do tipo de objeto existente.
-
-      ''');
-      print(s);
+    } on TypeError catch (e, s) {
+      printLog(
+        'O tipo de objeto genérico(objeto T) é diferente do tipo de objeto existente.', 
+        name: 'BindingPageBuilder', 
+        stackTrace: s
+      );
       rethrow;
     }
   }
 
   @override
-  State<BindingPageBuilder<T>> createState() => _BindingPageBuilderState<T>();
+  State<BindingPageBuilder> createState() => _BindingPageBuilderState();
 }
 
-class _BindingPageBuilderState<T> extends State<BindingPageBuilder<T>> {
-
+class _BindingPageBuilderState<T> extends State<BindingPageBuilder> {
   dynamic _controllerInstance;
   late final String _dependenceName;
   late final bool _containsKey;
 
   dynamic _getInstance() {
-    if(widget.sigleton) {
+    if (widget.sigleton) {
       /// Se sigleton == true, registre a instância na variável [_bindings]
 
-      if(_containsKey) {
-
-        if(!widget.lazy){
+      if (_containsKey) {
+        if (!widget.lazy) {
           return _controllerInstance;
         } else {
           return _bindings[_dependenceName];
         }
-
-      } else if(widget.lazy) {
-        
+      } else if (widget.lazy) {
         _controllerInstance = widget.controller();
 
         _bindings.putIfAbsent(
@@ -80,9 +77,7 @@ class _BindingPageBuilderState<T> extends State<BindingPageBuilder<T>> {
         );
 
         return _controllerInstance;
-
       } else {
-
         _bindings.putIfAbsent(
           _dependenceName,
           () => _controllerInstance,
@@ -90,13 +85,11 @@ class _BindingPageBuilderState<T> extends State<BindingPageBuilder<T>> {
 
         return _controllerInstance;
       }
-    } else if(!widget.lazy) {
-
+    } else if (!widget.lazy) {
       return _controllerInstance;
-
-    } else if(widget.lazy) {
+    } else if (widget.lazy) {
       // Essa condição extra dará sempre a mesma instância do objeto
-      // caso a instância seja solicitada mais uma vez, dessa forma 
+      // caso a instância seja solicitada mais uma vez, dessa forma
       // evita criar multliplas instâncias
       if (_controllerInstance != null) {
         return _controllerInstance;
@@ -115,27 +108,28 @@ class _BindingPageBuilderState<T> extends State<BindingPageBuilder<T>> {
 
     /// se lazy for false, crie ou carregue a instância
     if (!widget.lazy) {
-      if(widget.sigleton && _containsKey) {
-        _controllerInstance = _bindings[_dependenceName];     
+      if (widget.sigleton && _containsKey) {
+        _controllerInstance = _bindings[_dependenceName];
       } else {
         _controllerInstance = widget.controller();
       }
     }
-
   }
 
   @override
   void dispose() {
-    
-    if(!widget.sigleton) {
-      if(_controllerInstance is Sink) {
-        _controllerInstance?.close();
-      } else {
-        try {
+    if (!widget.sigleton) {
+      try {
+        if (_controllerInstance is Sink) {
+          _controllerInstance?.close();
+        } else {
           _controllerInstance?.dispose();
-        } catch (e) {
-         // print('----- Método dipose não encontrado -----');
         }
+      } catch (e) {
+        printLog(
+          '----- Método dispose não encontrado -----',
+          name: 'BindingPageBuilder',
+        );
       }
     }
 
@@ -147,5 +141,4 @@ class _BindingPageBuilderState<T> extends State<BindingPageBuilder<T>> {
 
   @override
   Widget build(BuildContext context) => widget.builder(context);
-
 }

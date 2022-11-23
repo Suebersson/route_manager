@@ -18,9 +18,6 @@ class StartApp extends StatelessWidget {
       navigatorKey: AppRoute.routes.navigatorKey,
       onUnknownRoute: AppRoute.routes.onUnknownRoute,
       routes: AppRoute.routes,
-      /*builder: (context, child){
-        return child!;
-      }*/
     );
   }
 }

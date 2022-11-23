@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:dart_dev_utils/dart_dev_utils.dart';
 
 part 'widget_transition_animation.dart';
 part 'route_observer_provider.dart';
@@ -40,7 +41,8 @@ extension ImplementFunction on BuildContext {
 
   RouteManager get routeManager => RouteManager.i;
   MediaQueryData get mediaQuery => MediaQuery.of(this);
-  
+  NavigatorState get navigator => Navigator.of(this);
+
 }
 
 class RouteManager {
@@ -83,8 +85,7 @@ class RouteManager {
           builder: _routes.containsKey(routeName)
             ? _routes[routeName]!
             : (_) => const UnKnowRouteScreen(),
-          routeName: routeName,
-          arguments: arguments,
+          settings: RouteSettings(name: routeName, arguments: arguments),
           flutterDefaultTransition: flutterDefaultTransition,
         )
       );
@@ -116,8 +117,7 @@ class RouteManager {
         builder: _routes.containsKey(routeName)
           ? _routes[routeName]!
           : (_) => const UnKnowRouteScreen(),
-        routeName: routeName,
-        arguments: arguments,
+        settings: RouteSettings(name: routeName, arguments: arguments),
         transitionType: transitionType, 
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -155,8 +155,7 @@ class RouteManager {
           builder: _routes.containsKey(routeName)
             ? _routes[routeName]!
             : (_) => const UnKnowRouteScreen(),
-          routeName: routeName,
-          arguments: arguments,
+          settings: RouteSettings(name: routeName, arguments: arguments),
           flutterDefaultTransition: flutterDefaultTransition,
         ),
         result: result,
@@ -187,8 +186,7 @@ class RouteManager {
         builder: _routes.containsKey(routeName)
           ? _routes[routeName]!
           : (_) => const UnKnowRouteScreen(),
-        routeName: routeName,
-        arguments: arguments,
+        settings: RouteSettings(name: routeName, arguments: arguments),
         transitionType: transitionType, 
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -228,8 +226,7 @@ class RouteManager {
           builder: _routes.containsKey(routeName)
             ? _routes[routeName]!
             : (_) => const UnKnowRouteScreen(),
-          routeName: routeName,
-          arguments: arguments,
+          settings: RouteSettings(name: routeName, arguments: arguments),
           flutterDefaultTransition: flutterDefaultTransition,
         ),
         predicate,
@@ -259,8 +256,7 @@ class RouteManager {
         builder: _routes.containsKey(routeName)
           ? _routes[routeName]!
           : (_) => const UnKnowRouteScreen(),
-        routeName: routeName,
-        arguments: arguments,
+        settings: RouteSettings(name: routeName, arguments: arguments),
         transitionType: transitionType,
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -301,8 +297,7 @@ class RouteManager {
           builder: _routes.containsKey(routeName)
             ? _routes[routeName]!
             : (_) => const UnKnowRouteScreen(),
-          routeName: routeName,
-          arguments: arguments,
+          settings: RouteSettings(name: routeName, arguments: arguments),
           flutterDefaultTransition: flutterDefaultTransition,
         )
       );
@@ -335,8 +330,7 @@ class RouteManager {
         builder: _routes.containsKey(routeName)
           ? _routes[routeName]!
           : (_) => const UnKnowRouteScreen(),
-        routeName: routeName,
-        arguments: arguments,
+        settings: RouteSettings(name: routeName, arguments: arguments),
         transitionType: transitionType, 
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -358,8 +352,7 @@ class RouteManager {
   Future<T?> push<T extends Object?>({
     required WidgetBuilder builder,
     String? title, /// esse parâmetro se aplica apenas ao objeto [CupertinoPageRoute]
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     bool maintainState = true,
     bool fullscreenDialog = false,
     FlutterDefaultTransition flutterDefaultTransition = FlutterDefaultTransition.material,
@@ -369,8 +362,7 @@ class RouteManager {
       NavigationTransition.flutterDefault<T>(
         builder: builder,
         title: title,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         flutterDefaultTransition: flutterDefaultTransition,
@@ -382,8 +374,7 @@ class RouteManager {
   //ir para uma página não configurada diretamente pelo Widget
   Future<T?> pushCustomized<T extends Object?>({
     required WidgetBuilder builder,
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     TransitionType transitionType = NavigationTransition.defaultTransitionType,
     Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
     Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
@@ -399,8 +390,7 @@ class RouteManager {
     return await currentState?.push(
       NavigationTransition.customized<T>(
         builder: builder,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         transitionType: transitionType, 
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -420,8 +410,7 @@ class RouteManager {
   Future<T?> pushReplacement<T extends Object?, TO extends Object?>({
     required WidgetBuilder builder,
     String? title, /// esse parâmetro se aplica apenas ao objeto [CupertinoPageRoute]
-    String? routeName, 
-    Object? arguments, 
+    RouteSettings? settings,
     TO? result,
     bool maintainState = true,
     bool fullscreenDialog = false,
@@ -432,8 +421,7 @@ class RouteManager {
       NavigationTransition.flutterDefault<T>(
         builder: builder,
         title: title,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         flutterDefaultTransition: flutterDefaultTransition,
@@ -447,8 +435,7 @@ class RouteManager {
   Future<T?> pushReplacementCustomized<T extends Object?, TO extends Object?>({
     required WidgetBuilder builder,
     TO? result,
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     TransitionType transitionType = NavigationTransition.defaultTransitionType,
     Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
     Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
@@ -464,8 +451,7 @@ class RouteManager {
     return currentState?.pushReplacement<T, TO>(
       NavigationTransition.customized<T>(
         builder: builder,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         transitionType: transitionType, 
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -486,8 +472,7 @@ class RouteManager {
     required WidgetBuilder builder,
     required RoutePredicate predicate,
     String? title, /// esse parâmetro se aplica apenas ao objeto [CupertinoPageRoute]
-    String? routeName, 
-    Object? arguments, 
+    RouteSettings? settings,
     bool maintainState = true,
     bool fullscreenDialog = false,
     FlutterDefaultTransition flutterDefaultTransition = FlutterDefaultTransition.material,
@@ -498,8 +483,7 @@ class RouteManager {
       NavigationTransition.flutterDefault<T>(
         builder: builder,
         title: title,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         maintainState: maintainState,
         fullscreenDialog: fullscreenDialog,
         flutterDefaultTransition: flutterDefaultTransition,
@@ -512,8 +496,7 @@ class RouteManager {
   Future<T?> pushAndRemoveUntilCustomized<T extends Object?>({
     required WidgetBuilder builder,
     required RoutePredicate predicate,
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     TransitionType transitionType = NavigationTransition.defaultTransitionType,
     Duration transitionDuration = NavigationTransition.defaultTransitionDuration,
     Duration reverseTransitionDuration = NavigationTransition.defaultTransitionDuration,
@@ -530,8 +513,7 @@ class RouteManager {
     return currentState?.pushAndRemoveUntil<T>(
       NavigationTransition.customized<T>(
         builder: builder,
-        routeName: routeName,
-        arguments: arguments,
+        settings: settings,
         transitionType: transitionType,
         transitionDuration: transitionDuration,
         reverseTransitionDuration: reverseTransitionDuration,
@@ -598,7 +580,7 @@ class RouteManager {
   RouteFactory get onUnknownRoute => (routeSettings) {
     return NavigationTransition.customized(
       builder: (_) => const UnKnowRouteScreen(),
-      routeName: routeSettings.name,
+      settings: routeSettings,
       transitionType: TransitionType.scaleCenter,
       curve: Curves.elasticInOut,
       transitionDuration: NavigationTransition.defaultTransitionDuration,

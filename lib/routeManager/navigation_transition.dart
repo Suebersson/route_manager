@@ -6,8 +6,7 @@ abstract class NavigationTransition {
   static Route<T> flutterDefault<T>({
     required WidgetBuilder builder,
     String? title, /// Esse parâmetro se aplica apenas ao [CupertinoPageRoute]
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     bool maintainState = true,
     bool fullscreenDialog = false,
     FlutterDefaultTransition flutterDefaultTransition = FlutterDefaultTransition.material,
@@ -18,14 +17,14 @@ abstract class NavigationTransition {
         return CupertinoPageRoute<T>(
           builder: builder,
           title: title,
-          settings: RouteSettings(name: routeName, arguments: arguments),
+          settings: settings,
           maintainState: maintainState,
           fullscreenDialog: fullscreenDialog,
         );
       default:
         return MaterialPageRoute<T>(
           builder: builder,
-          settings: RouteSettings(name: routeName, arguments: arguments),
+          settings: settings,
           maintainState: maintainState,
           fullscreenDialog: fullscreenDialog,
         );
@@ -35,8 +34,7 @@ abstract class NavigationTransition {
 
   static Route<T> customized<T>({
     required WidgetBuilder builder,
-    String? routeName,
-    Object? arguments,
+    RouteSettings? settings,
     TransitionType transitionType = NavigationTransition.defaultTransitionType,
     Duration transitionDuration = defaultTransitionDuration,
     Duration reverseTransitionDuration = defaultTransitionDuration,
@@ -59,7 +57,7 @@ abstract class NavigationTransition {
       fullscreenDialog: fullscreenDialog,
       transitionDuration: transitionDuration,
       reverseTransitionDuration: reverseTransitionDuration,
-      settings: RouteSettings(name: routeName, arguments: arguments),
+      settings: settings,
       transitionsBuilder: (route, context, animation, secondaryAnimation, child) {
         return WidgetTransitionAnimation(
           transitionType: transitionType,
