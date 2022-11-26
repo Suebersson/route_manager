@@ -2,21 +2,21 @@ part of 'route_manager.dart';
 
 extension ImplementPageDependecy on BuildContext {
   T getPageDependency<T>() {
-    return BindingPageBuilder.getPageDependency<T>(this);
+    return BindPageBuilder.getPageDependency<T>(this);
   }
 }
 
 final Map<String, Object> _bindings = {};
 
 @immutable
-class BindingPageBuilder<T> extends StatefulWidget {
+class BindPageBuilder<T> extends StatefulWidget {
   /// Widget responsável por acoplar uma instância de um [Object]
-  /// para um outro [Widget] (página) usar como uma dependência (uma cotroller)
+  /// para um outro [Widget] (página) filho usar como uma dependência (uma cotroller)
   ///
-  /// O mesmo tem o tatal controle para instânciar os objetos [builder] e [controller]
+  /// O mesmo tem o total controle para instânciar os objetos [builder] e [controller]
   /// apenas quando serão usados
 
-  const BindingPageBuilder({
+  const BindPageBuilder({
     Key? key,
     required this.builder,
     required this.controller,
@@ -30,19 +30,19 @@ class BindingPageBuilder<T> extends StatefulWidget {
   final bool lazy;
 
   static T getPageDependency<T>(BuildContext context) {
-    /// intância de [_BindingPageBuilderState]
-    dynamic bindingPageBuilderState = context.findAncestorStateOfType();
+    /// instância de [_BindPageBuilderState]
+    dynamic bindPageBuilderState = context.findAncestorStateOfType();
 
     ///
     /// chamar o método [controller] que não existe dentro da instância
     ///  para o dart chamar o método [noSuchMethod] e retornar o valor de [_controllerInstance
     //_TypeError (type 'Controller' is not a subtype of type 'Any')
     try {
-      return bindingPageBuilderState.controller();
+      return bindPageBuilderState.controller();
     } on TypeError catch (e, s) {
       printLog(
         'O tipo de objeto genérico(objeto T) é diferente do tipo de objeto existente.', 
-        name: 'BindingPageBuilder', 
+        name: 'BindPageBuilder', 
         stackTrace: s
       );
       rethrow;
@@ -50,10 +50,10 @@ class BindingPageBuilder<T> extends StatefulWidget {
   }
 
   @override
-  State<BindingPageBuilder> createState() => _BindingPageBuilderState();
+  State<BindPageBuilder> createState() => _BindPageBuilderState();
 }
 
-class _BindingPageBuilderState<T> extends State<BindingPageBuilder> {
+class _BindPageBuilderState<T> extends State<BindPageBuilder> {
   dynamic _controllerInstance;
   late final String _dependenceName;
   late final bool _containsKey;
@@ -128,7 +128,7 @@ class _BindingPageBuilderState<T> extends State<BindingPageBuilder> {
       } catch (e) {
         printLog(
           '----- Método dispose não encontrado -----',
-          name: 'BindingPageBuilder',
+          name: 'BindPageBuilder',
         );
       }
     }

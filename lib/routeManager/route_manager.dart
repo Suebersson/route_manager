@@ -7,7 +7,7 @@ part 'route_observer_provider.dart';
 part 'unknow_route_screen.dart';
 part 'screen_route_builder.dart';
 part 'navigation_transition.dart';
-part 'binding_page_builder.dart';
+part 'bind_page_builder.dart';
 
 /// Referências:
 /// https://docs.flutter.dev/cookbook/navigation/navigate-with-arguments

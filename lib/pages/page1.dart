@@ -24,7 +24,7 @@ class Page1 extends StatelessWidget {
             // Navigator.push(
             //   context, 
             //   MaterialPageRoute(
-            //     builder: (_) => BindingPageBuilder(
+            //     builder: (_) => BindPageBuilder(
             //       builder: (_) => const Page2(), 
             //       controller: () => Controller(),
             //       sigleton: false,
