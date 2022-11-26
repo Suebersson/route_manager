@@ -9,13 +9,15 @@ class Page2 extends StatelessWidget {
   const Page2({ Key? key }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-   //final argumnets = ModalRoute.of(context)!.settings.arguments;
+   //final argumnets = ModalRoute.of(context)!.settings.arguments as String;
    //final _routeName = ModalRoute.of(context)!.settings.name;
    //print(argumnets);
    //print(_routeName);
 
     //var controller = context.getPageDependency<Controller>();
     //print(controller.couter);
+    //var arg = context.argument<int>();
+    //print(arg);
 
     return Scaffold(
       backgroundColor: Colors.red,

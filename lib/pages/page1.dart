@@ -21,16 +21,16 @@ class Page1 extends StatelessWidget {
           name: 'Page2',
           onTap: () {
               
-            Navigator.push(
-              context, 
-              MaterialPageRoute(
-                builder: (_) => BindingPageBuilder(
-                  builder: (_) => const Page2(), 
-                  controller: () => Controller(),
-                  sigleton: false,
-                )
-              )
-            );
+            // Navigator.push(
+            //   context, 
+            //   MaterialPageRoute(
+            //     builder: (_) => BindingPageBuilder(
+            //       builder: (_) => const Page2(), 
+            //       controller: () => Controller(),
+            //       sigleton: false,
+            //     )
+            //   )
+            // );
               
             /*Navigator.push(
               context, 
@@ -106,13 +106,13 @@ class Page1 extends StatelessWidget {
             );*/
               
               
-            // RouteManager.i.pushCustomized(
-            //   builder: (_) => const Page2(),
-            //   settings: const RouteSettings(name: 'flutter'),
-            //   transitionType: TransitionType.theme,
-            //   transitionDuration: const Duration(seconds: 3),
-            //   reverseTransitionDuration: const Duration(seconds: 3)
-            // );
+            RouteManager.i.pushCustomized(
+              builder: (_) => const Page2(),
+              settings: const RouteSettings(name: 'flutter'),
+              transitionType: TransitionType.theme,
+              transitionDuration: const Duration(seconds: 3),
+              reverseTransitionDuration: const Duration(seconds: 3)
+            );
 
             // Navigator.push(
             //   context, 

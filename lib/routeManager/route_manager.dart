@@ -37,11 +37,25 @@ extension ImplementNavigatorkey on Map<String, WidgetBuilder> {
 
 }
 
-extension ImplementFunction on BuildContext {
+extension ImplementFunction<T> on BuildContext {
 
   RouteManager get routeManager => RouteManager.i;
   MediaQueryData get mediaQuery => MediaQuery.of(this);
   NavigatorState get navigator => Navigator.of(this);
+  ModalRoute<T>? get modalRoute => ModalRoute.of(this);
+  // ignore: avoid_shadowing_type_parameters
+  T? argument<T>() {
+    var arg = modalRoute?.settings.arguments;
+    if(arg == null){
+      printLog(
+        "O valor do argumento é nulo, verifique se o valor está sendo passado no parâmentro 'RouteSettings' para essa página",
+        name: 'RouteManager',
+      );  
+      return null;
+    } else {
+      return arg as T;
+    }
+  }
 
 }
 
