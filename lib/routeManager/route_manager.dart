@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:dart_dev_utils/dart_dev_utils.dart';
+import 'package:dependency_manager/dependency_manager.dart' show dependencyDispose;
 
 part 'widget_transition_animation.dart';
 part 'route_observer_provider.dart';
@@ -41,6 +42,7 @@ extension ImplementFunction<T> on BuildContext {
 
   RouteManager get routeManager => RouteManager.i;
   MediaQueryData get mediaQuery => MediaQuery.of(this);
+  Size get size => mediaQuery.size;
   NavigatorState get navigator => Navigator.of(this);
   ModalRoute<T>? get modalRoute => ModalRoute.of(this);
   // ignore: avoid_shadowing_type_parameters

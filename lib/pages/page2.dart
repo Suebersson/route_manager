@@ -14,8 +14,8 @@ class Page2 extends StatelessWidget {
    //print(argumnets);
    //print(_routeName);
 
-    //var controller = context.getPageDependency<Controller>();
-    //print(controller.couter);
+    var controller = context.getBind<Controller>();
+    print(controller.couter);
     //var arg = context.argument<int>();
     //print(arg);
 
@@ -42,11 +42,23 @@ class Page2 extends StatelessWidget {
               routeName: RouteName.page3,
               arguments: 'replace to page3'
             );*/
-            RouteManager.i.popAndPushNamedCustomized(
-              routeName: RouteName.page4,
-              transitionType: TransitionType.fadeWithScaleCenterLeft,
-              transitionDuration: const Duration(seconds: 3)
+            // RouteManager.i.popAndPushNamedCustomized(
+            //   routeName: RouteName.page4,
+            //   transitionType: TransitionType.fadeWithScaleCenterLeft,
+            //   transitionDuration: const Duration(seconds: 3)
+            // );
+
+            Navigator.push(
+              context, 
+              MaterialPageRoute(
+                builder: (_) => BindPageBuilder(
+                  builder: (_) => const Page2(), 
+                  controller: () => Controller(),
+                  sigleton: false,
+                )
+              )
             );
+            
 
           }, 
         ),
